@@ -1,0 +1,5 @@
+CREATE TABLE items (id TEXT PRIMARY KEY, name TEXT NOT NULL, family TEXT NOT NULL);
+CREATE TABLE transactions (id INTEGER PRIMARY KEY, issue_date TEXT NOT NULL, issue_time TEXT NOT NULL,
+user_id TEXT, item_id TEXT, return_date TEXT, return_time TEXT, FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(item_id) REFERENCES items(id));
+CREATE TABLE users (id TEXT PRIMARY KEY, first_name TEXT NOT NULL,
+last_name TEXT NOT NULL, status INTEGER NOT NULL, contact TEXT NOT NULL);
