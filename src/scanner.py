@@ -13,6 +13,7 @@ def main():
 	print ""
 	print "To add a new user press u"
 	print "To add a new item press i"
+	print "To checkout an item press c"
 	print "To exit press q"
 	print ""
 	print "What would you like to do?"
@@ -23,6 +24,8 @@ def main():
 		add_user(conn)
 	elif key == "i":
 		add_item(conn)
+	elif key == "c":
+		checkout(conn)
 	elif key == "q":
 		return
 	else:
@@ -91,6 +94,20 @@ def add_user(conn):
 
 		print "WARNING!"
 		print "This user already has an account"
+
+	return
+
+def checkout(conn):
+	sys.stdout.write("Please scan ID:")
+	user_id = raw_input();
+	c = conn.cursor();
+	sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user_id)
+	c.execute(sqlcmd);
+
+	if len(c.fetchall()) == 0:
+		print ("User not found")
+	else:
+		print ("User found")
 
 	return
 
