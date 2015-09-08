@@ -99,17 +99,59 @@ def add_user(conn):
 
 def checkout(conn):
 	sys.stdout.write("Please scan ID:")
-	user_id = raw_input();
-	c = conn.cursor();
-	sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user_id)
-	c.execute(sqlcmd);
+	user_id = raw_input()
+	
+	if not user_lookup(conn,user_id):
+		return
+	
+	print ("Please scan items");
+	item_id = []
+	raw = raw_input();
+	while(raw != "END"):
+		if (raw == "END"):
+			break
+		else:
+			if item_lookup(conn,raw):
+				item_id.append(raw)
+		
+		raw = raw_input()
+		
 
-	if len(c.fetchall()) == 0:
-		print ("User not found")
-	else:
-		print ("User found")
+	for item in item_id:
+		log_out(conn,item, user_id)
 
 	return
+
+#Update the transactions table to include the movement
+def log_out(conn,item, user):
+	c=conn.cursor()
+	sqlcmd = "INSERT INTO transactions values \
+			(null, date(\"now\"), time(\"now\",\
+			\"localtime\"), \"%s\", \"%s\",\
+			 null, null);" % (user, item)
+	c.execute(sqlcmd)
+	conn.commit()
+
+
+def item_lookup(conn, item):
+	c = conn.cursor()
+	sqlcmd = "SELECT * FROM items where id=\'%s\';" % (item)
+	c.execute(sqlcmd)
+	if len(c.fetchall()) == 0:
+		print ("Item not found")
+		return False
+	else:
+		return True
+
+def user_lookup(conn,user):
+	c = conn.cursor()
+	sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user)
+	c.execute(sqlcmd)
+	if len(c.fetchall()) == 0:
+		print ("User not found")
+		False
+	else:
+		return True
 
 if  __name__ == '__main__':
 	print "Welcome to the checkout software"
