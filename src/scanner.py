@@ -14,6 +14,7 @@ def main():
 	print "To add a new user press u"
 	print "To add a new item press i"
 	print "To checkout an item press c"
+	print "To return an item press r"
 	print "To exit press q"
 	print ""
 	print "What would you like to do?"
@@ -26,6 +27,8 @@ def main():
 		add_item(conn)
 	elif key == "c":
 		checkout(conn)
+	elif key == "r":
+		checkin(conn)
 	elif key == "q":
 		return
 	else:
@@ -107,12 +110,9 @@ def checkout(conn):
 	print ("Please scan items");
 	item_id = []
 	raw = raw_input();
-	while(raw != "END"):
-		if (raw == "END"):
-			break
-		else:
-			if item_lookup(conn,raw):
-				item_id.append(raw)
+	while (raw != "END"):
+		if item_lookup(conn,raw):
+			item_id.append(raw)
 		
 		raw = raw_input()
 		
@@ -122,16 +122,38 @@ def checkout(conn):
 
 	return
 
+def checkin(conn):
+	print ("Please scan items")
+	raw = raw_input()
+	while (raw != "END"):
+		if item_lookup(conn,raw):
+			log_in(conn,raw)
+
+		raw = raw_input()
+
+	return
+
 #Update the transactions table to include the movement
 def log_out(conn,item, user):
 	c=conn.cursor()
 	sqlcmd = "INSERT INTO transactions values \
 			(null, date(\"now\"), time(\"now\",\
 			\"localtime\"), \"%s\", \"%s\",\
-			 null, null);" % (user, item)
+			 null, null, date(\"now\",\"+3 days\"));" % (user, item)
 	c.execute(sqlcmd)
 	conn.commit()
 
+#Update the transactions table to include the return of the item
+def log_in(conn,item):
+	c=conn.cursor()
+	sqlcmd = "UPDATE transactions SET \
+				return_date=date('now'), \
+				return_time=time('now','localtime') \
+				where item_id=\'%s\' \
+				AND return_date IS NULL;" \
+				% (item)
+	c.execute(sqlcmd)
+	conn.commit()
 
 def item_lookup(conn, item):
 	c = conn.cursor()
@@ -147,9 +169,13 @@ def user_lookup(conn,user):
 	c = conn.cursor()
 	sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user)
 	c.execute(sqlcmd)
-	if len(c.fetchall()) == 0:
+	response = c.fetchall()
+	if len(response) == 0:
 		print ("User not found")
-		False
+		return False
+	elif response[0][3] == 0:
+		print ("This user is barred from checking out items")
+		return False
 	else:
 		return True
 
