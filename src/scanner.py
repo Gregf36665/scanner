@@ -14,6 +14,7 @@ class Scanner:
 	def __init__(self,db):
 		"""
 		Create a new scanner interface
+
 		:param db: The path of the database
 		"""
 		self.db = db
@@ -23,6 +24,7 @@ class Scanner:
 	def add_item(self,item_id, item_name,item_family):
 		"""
 		Add in a new item to the items table
+
 		:param item_id: the unique ID of the item
 		:param item_name: the name of the item
 		:param family: the type of item
@@ -48,10 +50,12 @@ class Scanner:
 	def add_user(self,user_id,fname,lname,contact):
 		"""
 		Add a new user into the user table
+
 		:param user_id: the unique ID of the user
 		:param fname: the user's first name
 		:param lname: the user's last name
 		:param contact: the email address of the user
+
 		:return Was the insert sucsessful
 		"""
 
@@ -84,27 +88,34 @@ class Scanner:
 
 		return
 
-	#Update the transactions table to include the movement
-	def log_out(conn,item, user):
-		c=conn.cursor()
+	def log_out(self,item, user):
+		"""
+		Update transactions to move an object out
+		
+		:param item: The ID of the item being taken out
+		:param user: The ID of the user taking the item out
+		"""
 		sqlcmd = "INSERT INTO transactions values \
 				(null, date(\"now\"), time(\"now\",\
 				\"localtime\"), \"%s\", \"%s\",\
 				 null, null, date(\"now\",\"+3 days\"));" % (user, item)
-		c.execute(sqlcmd)
-		conn.commit()
+		self.c.execute(sqlcmd)
+		self.conn.commit()
 
-	#Update the transactions table to include the return of the item
-	def log_in(conn,item):
-		c=conn.cursor()
+	def log_in(self,item):
+		"""
+		Update transactions to move an object in
+		
+		:param item: The ID of the item being returned
+		"""
 		sqlcmd = "UPDATE transactions SET \
 					return_date=date('now'), \
 					return_time=time('now','localtime') \
 					where item_id=\'%s\' \
 					AND return_date IS NULL;" \
 					% (item)
-		c.execute(sqlcmd)
-		conn.commit()
+		self.c.execute(sqlcmd)
+		self.conn.commit()
 
 	def item_lookup(self, item):
 		"""
@@ -115,13 +126,13 @@ class Scanner:
 		:return Does the item exist
 		"""
 		sqlcmd = "SELECT * FROM items where id=\'%s\';" % (item)
-		c.execute(sqlcmd)
-		if len(c.fetchall()) == 0:
+		self.c.execute(sqlcmd)
+		if len(self.c.fetchall()) == 0:
 			return False
 		else:
 			return True
 
-	def user_lookup(conn,user):
+	def user_lookup(self,user):
 		"""
 		See if a user exists and is active
 
@@ -132,10 +143,9 @@ class Scanner:
 		1 = Doesn't exits
 		2 = Inactive
 		""" 
-		c = conn.cursor()
 		sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user)
-		c.execute(sqlcmd)
-		response = c.fetchall()
+		self.c.execute(sqlcmd)
+		response = self.c.fetchall()
 		if len(response) == 0:
 			return 1
 		elif response[0][3] == 0:
