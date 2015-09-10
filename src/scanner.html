@@ -1,0 +1,80 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module scanner</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>scanner</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/Greg/Documents/Uni/Junior/Fall/FAMS202/scanner/src/scanner.py">/Users/Greg/Documents/Uni/Junior/Fall/FAMS202/scanner/src/scanner.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;file&nbsp;contains&nbsp;functions&nbsp;to&nbsp;manipulate&nbsp;the&nbsp;db</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="getopt.html">getopt</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="sqlite3.html">sqlite3</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="scanner.html#Scanner">Scanner</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Scanner">class <strong>Scanner</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Scanner">Scanner</a>&nbsp;includes&nbsp;all&nbsp;of&nbsp;the&nbsp;functions&nbsp;required&nbsp;to&nbsp;manipulate&nbsp;the&nbsp;database<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Scanner-__init__"><strong>__init__</strong></a>(self, db)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;scanner&nbsp;interface<br>
+:param&nbsp;db:&nbsp;The&nbsp;path&nbsp;of&nbsp;the&nbsp;database</tt></dd></dl>
+
+<dl><dt><a name="Scanner-add_item"><strong>add_item</strong></a>(self, item_id, item_name, item_family)</dt><dd><tt>Add&nbsp;in&nbsp;a&nbsp;new&nbsp;item&nbsp;to&nbsp;the&nbsp;items&nbsp;table<br>
+:param&nbsp;item_id:&nbsp;the&nbsp;unique&nbsp;ID&nbsp;of&nbsp;the&nbsp;item<br>
+:param&nbsp;item_name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;item<br>
+:param&nbsp;family:&nbsp;the&nbsp;type&nbsp;of&nbsp;item<br>
+&nbsp;<br>
+:return&nbsp;Was&nbsp;the&nbsp;insert&nbsp;sucsessful</tt></dd></dl>
+
+<dl><dt><a name="Scanner-add_user"><strong>add_user</strong></a>(self, user_id, fname, lname, contact)</dt><dd><tt>Add&nbsp;a&nbsp;new&nbsp;user&nbsp;into&nbsp;the&nbsp;user&nbsp;table<br>
+:param&nbsp;user_id:&nbsp;the&nbsp;unique&nbsp;ID&nbsp;of&nbsp;the&nbsp;user<br>
+:param&nbsp;fname:&nbsp;the&nbsp;user's&nbsp;first&nbsp;name<br>
+:param&nbsp;lname:&nbsp;the&nbsp;user's&nbsp;last&nbsp;name<br>
+:param&nbsp;contact:&nbsp;the&nbsp;email&nbsp;address&nbsp;of&nbsp;the&nbsp;user<br>
+:return&nbsp;Was&nbsp;the&nbsp;insert&nbsp;sucsessful</tt></dd></dl>
+
+<dl><dt><a name="Scanner-checkin"><strong>checkin</strong></a>(conn)</dt></dl>
+
+<dl><dt><a name="Scanner-checkout"><strong>checkout</strong></a>(self, user_id, items)</dt><dd><tt>Checkout&nbsp;items<br>
+This&nbsp;method&nbsp;assumes&nbsp;that&nbsp;all&nbsp;of&nbsp;the&nbsp;item&nbsp;ids&nbsp;are&nbsp;good<br>
+Also&nbsp;it&nbsp;assumes&nbsp;that&nbsp;the&nbsp;user&nbsp;is&nbsp;good&nbsp;too&nbsp;(Not&nbsp;disabled)<br>
+&nbsp;<br>
+:param&nbsp;user_id:&nbsp;the&nbsp;unique&nbsp;ID&nbsp;of&nbsp;the&nbsp;user,&nbsp;it&nbsp;must&nbsp;be&nbsp;in&nbsp;the&nbsp;table<br>
+:param&nbsp;items:&nbsp;a&nbsp;tuple&nbsp;of&nbsp;all&nbsp;item&nbsp;IDs&nbsp;the&nbsp;user&nbsp;wants&nbsp;to&nbsp;check&nbsp;out</tt></dd></dl>
+
+<dl><dt><a name="Scanner-item_lookup"><strong>item_lookup</strong></a>(conn, item)</dt></dl>
+
+<dl><dt><a name="Scanner-log_in"><strong>log_in</strong></a>(conn, item)</dt><dd><tt>#Update&nbsp;the&nbsp;transactions&nbsp;table&nbsp;to&nbsp;include&nbsp;the&nbsp;return&nbsp;of&nbsp;the&nbsp;item</tt></dd></dl>
+
+<dl><dt><a name="Scanner-log_out"><strong>log_out</strong></a>(conn, item, user)</dt><dd><tt>#Update&nbsp;the&nbsp;transactions&nbsp;table&nbsp;to&nbsp;include&nbsp;the&nbsp;movement</tt></dd></dl>
+
+<dl><dt><a name="Scanner-user_lookup"><strong>user_lookup</strong></a>(conn, user)</dt></dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
