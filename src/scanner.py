@@ -73,6 +73,35 @@ class Scanner:
 			self.conn.rollback()
 			return False
 
+	def get_user(self, user_id):
+		"""
+		Get user information
+
+		:param user_id: the unique ID of the user
+		
+		:return A tuple of user information
+		format
+		ID, first_name, last_name, status, contact
+		"""
+		sqlcmd = "SELECT * FROM users where id=\"%s\";" % (user_id)
+		self.c.execute(sqlcmd);
+		return self.c.fetchall()
+
+	def get_item(self, item_id):
+		"""
+		Get item information
+
+		:param item_id: the unique ID of the item
+
+		:return A tuple of item information
+		format
+		ID, name, family
+		"""
+		sqlcmd = "SELECT * FROM items WHERE id = \"%s\";" % (item_id)
+		self.c.execute(sqlcmd)
+		return self.c.fetchall()
+
+	
 	def checkout(self,user_id,items):
 		"""
 		Checkout items
