@@ -58,3 +58,6 @@ target/
 
 # Keep the db off git
 *.db
+
+# Prevent swap files
+*.swp
